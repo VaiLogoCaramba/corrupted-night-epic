@@ -19,7 +19,7 @@ import lime.utils.Assets;
 import flixel.system.FlxSound;
 import openfl.utils.Assets as OpenFlAssets;
 import WeekData;
-#if MODS_ALLOWED
+#if sys
 import sys.FileSystem;
 #end
 
@@ -217,6 +217,10 @@ class FreeplayState extends MusicBeatState
 		var text:FlxText = new FlxText(textBG.x - 230, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		add(text);
+
+		#if android
+		addVirtualPad(LEFT_FULL, A_B_C);
+		#end
 		super.create();
 	}
 
