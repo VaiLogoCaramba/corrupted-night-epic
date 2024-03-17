@@ -14,11 +14,15 @@ class End extends MusicBeatState
  
     override function create() 
     {
+
+	#if android
+	addVirtualPad(NONE, A_B);
+	#end
         super.create();
   
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         thanks = new FlxText(0, 0, FlxG.width,
-			"Thanks for play the demo!\n
+			"Thanks for play the demo Port By:SINIX SKR!!\n
 			The team is working very hard to release the full release soon!\n
 			If you want to participate in the project so that this goes faster, talk to me on my discord: ROYAL#5081\n
 			We are waiting for you :D\n
