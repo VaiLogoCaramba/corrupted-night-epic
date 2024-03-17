@@ -832,6 +832,11 @@ class PlayState extends MusicBeatState
 			}
 		}
 		#end
+
+		#if android
+		addAndroidControls();
+		androidControls.visible = true;
+		#end
 		
 
 		// STAGE SCRIPTS
@@ -850,6 +855,10 @@ class PlayState extends MusicBeatState
 
 		if(doPush) 
 			luaArray.push(new FunkinLua(luaFile));
+		#end
+
+		#if android
+		addAndroidControls();
 		#end
 
 		if(!modchartSprites.exists('blammedLightsBlack')) { //Creates blammed light black fade in case you didn't make your own
@@ -1112,6 +1121,16 @@ class PlayState extends MusicBeatState
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 
+	        var creditTxt = new FlxText(876, 648, 348);
+                creditTxt.text = "PORTED BY\nSINIX SKR"; // mais um port das profundezas 
+                creditTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+                creditTxt.scrollFactor.set();
+                add(creditTxt);
+
+	        if(ClientPrefs.downScroll) {
+			creditTxt.y = 148;
+		}
+
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
@@ -1130,6 +1149,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+	        creditTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
