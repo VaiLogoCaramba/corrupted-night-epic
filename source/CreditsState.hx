@@ -145,6 +145,10 @@ class CreditsState extends MusicBeatState
 		bg.color = getCurrentBGColor();
 		intendedColor = bg.color;
 		changeSelection();
+
+		#if android
+		addVirtualPad(UP_DOWN, B);
+		#end
 		super.create();
 	}
 
@@ -234,4 +238,3 @@ class CreditsState extends MusicBeatState
 		return creditsStuff[num].length <= 1;
 	}
 }
-#end
