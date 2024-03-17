@@ -12,7 +12,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
-#if MODS_ALLOWED
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -234,3 +234,4 @@ class CreditsState extends MusicBeatState
 		return creditsStuff[num].length <= 1;
 	}
 }
+#end
