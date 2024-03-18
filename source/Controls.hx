@@ -760,7 +760,7 @@ class Controls extends FlxActionSet
 	}	
 	#end
 	
-	public function unbindKeys(control:Control, keys:Array<FlxKey>);
+	public function unbindKeys(control:Control, keys:Array<FlxKey>));
 	{
 		var copyKeys:Array<FlxKey> = keys.copy();
 		for (i in 0...copyKeys.length) {
