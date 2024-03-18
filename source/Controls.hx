@@ -750,7 +750,7 @@ class Controls extends FlxActionSet
 		#end
 	}
 
-	public function unbindKeys(control:Control, keys:Array<FlxKey>);
+	public function unbindKeys(control:Control, keys:Array<FlxKey>)
 	{
 		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, _) -> removeKeys(action, keys));
