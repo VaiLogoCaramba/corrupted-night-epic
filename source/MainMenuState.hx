@@ -282,7 +282,7 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 		
-		if (!selectedSomethin)
+		  (!selectedSomethin)
 		{
 			if (controls.UI_UP_P)
 			{
