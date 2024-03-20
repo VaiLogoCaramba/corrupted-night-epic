@@ -250,7 +250,6 @@ class MainMenuState extends MusicBeatState
 						FlxG.sound.pause();
 						selectedSomethin = true;
 						bfGlitch.visible = false;
-						(new FlxVideo(Paths.video('aquiestatuviejainutilmiracomomelacachoooooh'))).finishCallback = function(); {
 							isDifferent = true;
 							selectedSomethin = false;
 							FlxG.sound.resume();
