@@ -11,6 +11,7 @@ import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 #if android
+import flixel.group.FlxGroup;
 import android.flixel.FlxButton;
 import android.flixel.FlxHitbox;
 import android.flixel.FlxVirtualPad;
@@ -42,7 +43,6 @@ enum abstract Action(String) to String from String
 	var NOTE_LEFT_R = "note_left-release";
 	var NOTE_RIGHT_R = "note_right-release";
 	var NOTE_DOWN_R = "note_down-release";
-	var DODGE = "dodge";
 	var ACCEPT = "accept";
 	var BACK = "back";
 	var PAUSE = "pause";
@@ -76,7 +76,6 @@ abstract Action(String) to String from String
 	var NOTE_LEFT_R = "note_left-release";
 	var NOTE_RIGHT_R = "note_right-release";
 	var NOTE_DOWN_R = "note_down-release";
-	var DODGE = "dodge";
 	var ACCEPT = "accept";
 	var BACK = "back";
 	var PAUSE = "pause";
@@ -105,7 +104,6 @@ enum Control
 	NOTE_LEFT;
 	NOTE_RIGHT;
 	NOTE_DOWN;
-	DODGE;
 	RESET;
 	ACCEPT;
 	BACK;
@@ -150,7 +148,6 @@ class Controls extends FlxActionSet
 	var _note_leftR = new FlxActionDigital(Action.NOTE_LEFT_R);
 	var _note_rightR = new FlxActionDigital(Action.NOTE_RIGHT_R);
 	var _note_downR = new FlxActionDigital(Action.NOTE_DOWN_R);
-	var _dodge = new FlxActionDigital(Action.DODGE);
 	var _accept = new FlxActionDigital(Action.ACCEPT);
 	var _back = new FlxActionDigital(Action.BACK);
 	var _pause = new FlxActionDigital(Action.PAUSE);
@@ -285,11 +282,6 @@ class Controls extends FlxActionSet
 	inline function get_NOTE_DOWN_R()
 		return _note_downR.check();
 
-	public var DODGE(get, never):Bool;
-	
-	inline function get_DODGE()
-		return _dodge.check();
-
 	public var ACCEPT(get, never):Bool;
 
 	inline function get_ACCEPT()
@@ -339,7 +331,6 @@ class Controls extends FlxActionSet
 		add(_note_leftR);
 		add(_note_rightR);
 		add(_note_downR);
-		add(_dodge);
 		add(_accept);
 		add(_back);
 		add(_pause);
@@ -379,7 +370,6 @@ class Controls extends FlxActionSet
 		add(_note_leftR);
 		add(_note_rightR);
 		add(_note_downR);
-		add(_dodge);
 		add(_accept);
 		add(_back);
 		add(_pause);
@@ -503,7 +493,8 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.BACK, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonB, state));
 			case A_B | A_B_C | A_B_E | A_B_X_Y | A_B_C_X_Y | A_B_C_X_Y_Z | A_B_C_D_V_X_Y_Z:
 				inline forEachBound(Control.ACCEPT, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonA, state));
-				inline forEachBound(Control.BACK, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonB, state)); case NONE: // do nothing
+				inline forEachBound(Control.BACK, (action, state) -> addbuttonNOTES(action, VirtualPad.buttonB, state));
+			case NONE: // do nothing
 		}
 	}
 
@@ -523,8 +514,7 @@ class Controls extends FlxActionSet
 			}
 		}
 	}
-	#end
-
+	#end					
 	override function update()
 	{
 		super.update();
@@ -568,7 +558,6 @@ class Controls extends FlxActionSet
 			case NOTE_DOWN: _note_down;
 			case NOTE_LEFT: _note_left;
 			case NOTE_RIGHT: _note_right;
-			case DODGE: _dodge;
 			case ACCEPT: _accept;
 			case BACK: _back;
 			case PAUSE: _pause;
@@ -624,8 +613,6 @@ class Controls extends FlxActionSet
 				func(_note_down, PRESSED);
 				func(_note_downP, JUST_PRESSED);
 				func(_note_downR, JUST_RELEASED);
-			case DODGE: 
-				func(_dodge, JUST_PRESSED);
 			case ACCEPT:
 				func(_accept, JUST_PRESSED);
 			case BACK:
@@ -722,9 +709,8 @@ class Controls extends FlxActionSet
 			}
 		}
 	}
-
+        
 	#if !android
-	
 	public function bindKeys(control:Control, keys:Array<FlxKey>)
 	{
 		var copyKeys:Array<FlxKey> = keys.copy();
@@ -739,6 +725,20 @@ class Controls extends FlxActionSet
 		#end
 	}
 
+	public function unbindKeys(control:Control, keys:Array<FlxKey>)
+	{
+		var copyKeys:Array<FlxKey> = keys.copy();
+		for (i in 0...copyKeys.length) {
+			if(i == NONE) copyKeys.remove(i);
+		}
+
+		#if (haxe >= "4.0.0")
+		inline forEachBound(control, (action, _) -> removeKeys(action, copyKeys));
+		#else
+		forEachBound(control, function(action, _) removeKeys(action, copyKeys));
+		#end
+	}
+	
 	#else
 
 	public function bindKeys(control:Control, keys:Array<FlxKey>)
@@ -758,22 +758,7 @@ class Controls extends FlxActionSet
 		forEachBound(control, function(action, _) removeKeys(action, keys));
 		#end
 	}	
-	#end
-	
-	public function unbindKeys(control:Control, keys:Array<FlxKey>)
-	{
-		var copyKeys:Array<FlxKey> = keys.copy();
-		for (i in 0...copyKeys.length) {
-			if(i == NONE) copyKeys.remove(i);
-		}
-
-		#if (haxe >= "4.0.0")
-		inline forEachBound(control, (action, _) -> removeKeys(action, copyKeys));
-		#else
-		forEachBound(control, function(action, _) removeKeys(action, copyKeys));
-		#end
-	}
-
+	#end					
 	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
 	{
 		for (key in keys)
@@ -826,7 +811,6 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, [S]);
 				inline bindKeys(Control.NOTE_LEFT, [A]);
 				inline bindKeys(Control.NOTE_RIGHT, [D]);
-				inline bindKeys(Control.DODGE, [E]);
 				inline bindKeys(Control.ACCEPT, [G, Z]);
 				inline bindKeys(Control.BACK, [H, X]);
 				inline bindKeys(Control.PAUSE, [ONE]);
@@ -840,7 +824,6 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
 				inline bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
 				inline bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				inline bindKeys(Control.DODGE, [SPACE]);
 				inline bindKeys(Control.ACCEPT, [O]);
 				inline bindKeys(Control.BACK, [P]);
 				inline bindKeys(Control.PAUSE, [ENTER]);
@@ -860,7 +843,6 @@ class Controls extends FlxActionSet
 				bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
 				bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
 				bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
-				bindKeys(Control.DODGE, [E, SPACE]);
 				bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
 				bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
 				bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
@@ -874,7 +856,6 @@ class Controls extends FlxActionSet
 				bindKeys(Control.NOTE_DOWN, [S]);
 				bindKeys(Control.NOTE_LEFT, [A]);
 				bindKeys(Control.NOTE_RIGHT, [D]);
-				bindKeys(Control.DODGE, [E]);
 				bindKeys(Control.ACCEPT, [G, Z]);
 				bindKeys(Control.BACK, [H, X]);
 				bindKeys(Control.PAUSE, [ONE]);
@@ -888,7 +869,6 @@ class Controls extends FlxActionSet
 				bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
 				bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
 				bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.DODGE, [SPACE]);
 				bindKeys(Control.ACCEPT, [O]);
 				bindKeys(Control.BACK, [P]);
 				bindKeys(Control.PAUSE, [ENTER]);
@@ -969,7 +949,6 @@ class Controls extends FlxActionSet
 			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN, A],
 			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT, X],
 			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT, B],
-			Control.DODGE => [32],
 			Control.PAUSE => [START],
 			Control.RESET => [8]
 		]);
@@ -986,7 +965,6 @@ class Controls extends FlxActionSet
 			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN, B],
 			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT, Y],
 			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT, A],
-			Control.DODGE => [SPACE],
 			Control.PAUSE => [START],
 			Control.RESET => [8],
 		]);
