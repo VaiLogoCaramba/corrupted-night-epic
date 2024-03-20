@@ -251,14 +251,13 @@ class MainMenuState extends MusicBeatState
 						FlxG.sound.pause();
 						selectedSomethin = true;
 						bfGlitch.visible = false;
-						(new FlxVideo(Paths.video('aquiestatuviejainutilmiracomomelacachoooooh'))).finishCallback = function() {
-							isDifferent = true;
-							selectedSomethin = false;
-							FlxG.sound.resume();
-							bfGlitch.visible = true;
-						}
+						isDifferent = true;
+						selectedSomethin = false;
+						FlxG.sound.resume();
+						bfGlitch.visible = true;
 					}
 				}
+			}
 				else if(lkp.length == sega.length)
 				{
 					var isDifferent:Bool = false;
@@ -274,16 +273,15 @@ class MainMenuState extends MusicBeatState
 						FlxG.sound.pause();
 						selectedSomethin = true;
 						bfGlitch.visible = false;
-						(new FlxVideo(Paths.video('mcsonic'))).finishCallback = function() {
-							isDifferent = true;
-							selectedSomethin = false;
-							FlxG.sound.resume();
-							bfGlitch.visible = true;
-						}
+		                                isDifferent = true;
+						selectedSomethin = false;
+						FlxG.sound.resume();
+						bfGlitch.visible = true;
 					}
 				}
 			}
 		}
+	}
 		
 		if (!selectedSomethin)
 		{
