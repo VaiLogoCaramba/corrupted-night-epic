@@ -282,6 +282,8 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 	}
+
+
 		
 			if (controls.UI_UP_P)
 			{
