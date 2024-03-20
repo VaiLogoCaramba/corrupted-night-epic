@@ -202,10 +202,11 @@ class MainMenuState extends MusicBeatState
 
 		changeItem();
 
-        #if android
-        addVirtualPad(UP_DOWN, A_B);
-        #end
-		super.create();
+		#if android
+		addVirtualPad(UP_DOWN, A_B);
+		#end	
+		
+			super.create();
 	}
 
 	var selectedSomethin:Bool = false;
@@ -250,7 +251,7 @@ class MainMenuState extends MusicBeatState
 						FlxG.sound.pause();
 						selectedSomethin = true;
 						bfGlitch.visible = false;
-						(new FlxVideo(Paths.video('aquiestatuviejainutilmiracomomelacachoooooh'))).finishCallback = function(); {
+						(new FlxVideo(Paths.video('aquiestatuviejainutilmiracomomelacachoooooh'))).finishCallback = function() {
 							isDifferent = true;
 							selectedSomethin = false;
 							FlxG.sound.resume();
@@ -273,7 +274,7 @@ class MainMenuState extends MusicBeatState
 						FlxG.sound.pause();
 						selectedSomethin = true;
 						bfGlitch.visible = false;
-						(new FlxVideo(Paths.video('mcsonic'))).finishCallback = function(); {
+						(new FlxVideo(Paths.video('mcsonic'))).finishCallback = function() {
 							isDifferent = true;
 							selectedSomethin = false;
 							FlxG.sound.resume();
